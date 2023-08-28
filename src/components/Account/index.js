@@ -7,7 +7,7 @@ import LinkCard from "./LinkCard";
 const dummyData=[
   {
     id:'223sdawd23',
-    creeatedAt:new Date(),
+    createdAt:new Date(),
     name:'mtya sd',
     longURL:'https://google.com',
     shortCode:'yoyo',
