@@ -1,7 +1,7 @@
 import { Toolbar,AppBar,Typography,Box, Button } from "@mui/material"
 const Navbar = () => {
   return (
-    <AppBar position="static">
+    <AppBar elevation={0} color="secondary" position="static">
         <Toolbar>
           <Typography variant="h6">shortly</Typography>
           <Box ml="auto">
