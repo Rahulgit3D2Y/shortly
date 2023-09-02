@@ -25,8 +25,7 @@ const Home = () => {
     }
   };
 
-  console.log(auth.currentUser);
-
+ 
   return (
     <>
       <Typography>Home</Typography>
@@ -43,7 +42,7 @@ const Home = () => {
         onChange={handleChange}
         label="Password"
       />
-      <Button onClick={handleSignup}>Sign up</Button>
+      <Button variant='contained'size='large' onClick={handleSignup}>Sign up</Button>
     </>
   );
 };
