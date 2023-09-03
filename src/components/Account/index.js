@@ -2,6 +2,7 @@ import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import Navbar from "./Navbar";
 import { Fragment, useState } from "react";
 import LinkCard from "./LinkCard";
+import ShortenURlModal from "./ShortenURlModal";
 
 
 const dummyData=[
@@ -35,10 +36,14 @@ const dummyData=[
 ]
 
 const Account = () => {
+
+  const[openModal,setOpenModal]=useState('false');
   const [links, setLinks] = useState(dummyData);
   return (
 
     <>
+    {openModal && <ShortenURlModal
+     handleClose={()=>setOpenModal(false)}/>}
       <Navbar />
       <Box mt={5}>
         <Grid container justifyContent="center">
@@ -47,7 +52,7 @@ const Account = () => {
               <Box mr={3}>
                 <Typography variant="h4">Links</Typography>
               </Box>
-              <Button variant="contained" color="primary" disableElevation> Create new</Button>
+              <Button onClick={()=>{setOpenModal(true)}} variant="contained" color="primary" disableElevation> Create new</Button>
             </Box>
              
             {links.map((link,idx)=>(

@@ -28,8 +28,9 @@ const LinkCard = ({
                         <Typography color="primary">{window.location.host}/{shortCode}
                         </Typography>
                     </Box>
-
-                    <Button color="primary" size="small" variant="outlined">Copy</Button>
+                    <Box mx={3}>
+                    <Button color="primary" size="small" variant="outlined">Copy</Button></Box>
+                    <Button color="secondary" size="small" variant="contained">Delete</Button>
                 </Box>
             </Box>
             <Box>
