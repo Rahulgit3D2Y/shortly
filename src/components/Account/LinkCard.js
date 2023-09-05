@@ -1,7 +1,7 @@
 import { BarChart as ChartIcon } from "@mui/icons-material";
-import { Typography, Button, Box } from "@mui/material";
-import format from "date-fns/format";
-import React from 'react'
+import { Typography, Button, Box } from "@mui/material";import { format } from "date-fns"; // Import the format function from date-fns
+
+import React from 'react';
 
 const LinkCard = ({
     id,
@@ -9,19 +9,18 @@ const LinkCard = ({
     name,
     longURL,
     shortCode,
-    totalClicks, }) => {
+    totalClicks,
+}) => {
     return (
         <Box display="flex" justifyContent="space-between" alignItems="center">
-             <Box>
+            <Box>
                 <Typography color="textSecondary" variant="overline">
-                    created at {format(new Date, 'yyyy-MM-dd')}
+                    created at {format(createdAt, 'd MMM, HH:mm')}
                 </Typography>
                 <Box my={2}>
                     <Typography variant="h5">{name}</Typography>
                     <Typography>{longURL}</Typography>
                 </Box>
-
-
 
                 <Box display="flex" alignItems="center">
                     <Box mr={3}>
@@ -29,12 +28,13 @@ const LinkCard = ({
                         </Typography>
                     </Box>
                     <Box mx={3}>
-                    <Button color="primary" size="small" variant="outlined">Copy</Button></Box>
+                        <Button color="primary" size="small" variant="outlined">Copy</Button>
+                    </Box>
                     <Button color="secondary" size="small" variant="contained">Delete</Button>
                 </Box>
             </Box>
             <Box>
-                <Box >
+                <Box>
                     <Box display="flex" justifyContent="center">
                         <Typography>{totalClicks}</Typography>
                         <ChartIcon />
@@ -43,7 +43,7 @@ const LinkCard = ({
                 </Box>
             </Box>
         </Box>
-    )
+    );
 }
 
-export default LinkCard
+export default LinkCard;
