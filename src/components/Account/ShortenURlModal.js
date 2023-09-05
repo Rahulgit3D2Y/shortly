@@ -5,7 +5,7 @@ import { Close } from '@mui/icons-material'
 
 
 
-const ShortenURlModal = ({handleClose}) => {
+const ShortenURlModal = ({handleClose,createShortenLink}) => {
 const [form,setForm]=useState({
     name:'',longUrl:'',
 });
@@ -16,7 +16,9 @@ const [form,setForm]=useState({
           [event.target.name]: event.target.value,
         }));
       };
-    
+    const handleSubmit=()=>{
+        createShortenLink(form.name,form.longUrl)
+    }
     return (
         <Dialog open={true} onClose={handleClose} fullWidth>
             <DialogTitle>
@@ -37,7 +39,7 @@ const [form,setForm]=useState({
             </DialogContent>
             <DialogActions>
                 <Box mr={2} my={1}>
-                    <Button onClick={()=>console.log(form)} color="primary" variant='contained' disableElevation>Shorten URL</Button>
+                    <Button onClick={handleSubmit} color="primary" variant='contained' disableElevation>Create Shorten URL</Button>
                 </Box>
             </DialogActions>
         </Dialog>

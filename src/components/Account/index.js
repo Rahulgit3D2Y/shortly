@@ -3,47 +3,69 @@ import Navbar from "./Navbar";
 import { Fragment, useState } from "react";
 import LinkCard from "./LinkCard";
 import ShortenURlModal from "./ShortenURlModal";
+import { app, auth, firestore } from "../../firebase";
+import { nanoid } from "nanoid";
+import { collection, addDoc,serverTimestamp } from "firebase/firestore";
+ 
 
 
-const dummyData=[
+const dummyData = [
   {
-    id:'223sdawd23',
-    createdAt:new Date(),
-    name:'ararara',
-    longURL:'https://google.com',
-    shortCode:'yoyo',
-    totalClicks:11,
+    id: '223sdawd23',
+    createdAt: new Date(),
+    name: 'ararara',
+    longURL: 'https://google.com',
+    shortCode: 'yoyo',
+    totalClicks: 11,
 
   },
   {
-    id:'223wd23',
-    createdAt:new Date(),
-    name:'araara',
-    longURL:'https://googleeee.com',
-    shortCode:'yo11yo',
-    totalClicks:131,
+    id: '223wd23',
+    createdAt: new Date(),
+    name: 'araara',
+    longURL: 'https://googleeee.com',
+    shortCode: 'yo11yo',
+    totalClicks: 131,
 
   },
   {
-    id:'22 3',
-    createdAt:new Date(),
-    name:'ar a',
-    longURL:'https://googleeee.com',
-    shortCode:' 11yo',
-    totalClicks:1131,
+    id: '22 3',
+    createdAt: new Date(),
+    name: 'ar a',
+    longURL: 'https://googleeee.com',
+    shortCode: ' 11yo',
+    totalClicks: 1131,
 
   }
 ]
 
 const Account = () => {
 
-  const[openModal,setOpenModal]=useState('false');
+  const [openModal, setOpenModal] = useState('false');
   const [links, setLinks] = useState(dummyData);
+
+  const handleCreateShortenLink = async (name, longURL) => {
+    const link = {
+      name,
+      longURL,
+      createdAt: serverTimestamp(),
+      shortCode: nanoid(6),
+      totalClicks: 0,
+    };
+  
+    try {
+      const docRef = await addDoc(collection(firestore, 'users', auth.currentUser.uid, 'links'), link);
+      console.log('Document written with ID: ', docRef.id);
+      setOpenModal(false);
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+  }
   return (
 
     <>
-    {openModal && <ShortenURlModal
-     handleClose={()=>setOpenModal(false)}/>}
+      {openModal && <ShortenURlModal createShortenLink={handleCreateShortenLink}
+        handleClose={() => setOpenModal(false)} />}
       <Navbar />
       <Box mt={5}>
         <Grid container justifyContent="center">
@@ -52,24 +74,24 @@ const Account = () => {
               <Box mr={3}>
                 <Typography variant="h4">Links</Typography>
               </Box>
-              <Button onClick={()=>{setOpenModal(true)}} variant="contained" color="primary" disableElevation> Create new</Button>
+              <Button onClick={() => { setOpenModal(true) }} variant="contained" color="primary" disableElevation> Create new</Button>
             </Box>
-             
-            {links.map((link,idx)=>(
+
+            {links.map((link, idx) => (
               <Fragment key={link.id}>
-                <LinkCard {...link}/>
-                { idx!==links.length-1 &&(<Box my={4}>
-                  <Divider/>
+                <LinkCard {...link} />
+                {idx !== links.length - 1 && (<Box my={4}>
+                  <Divider />
                 </Box>
-                ) }        
-                
+                )}
+
               </Fragment>
             ))}
           </Grid>
         </Grid>
       </Box>
     </>
-    );
+  );
 }
 
 export default Account;
