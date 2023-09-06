@@ -15,7 +15,10 @@ const LinkCard = ({
         <Box display="flex" justifyContent="space-between" alignItems="center">
             <Box>
                 <Typography color="textSecondary" variant="overline">
-                    created at {format(createdAt, 'd MMM, HH:mm')}
+                   {
+  createdAt instanceof Date && !isNaN(createdAt)
+    ? format(createdAt, 'd MMM, HH:mm')
+    : 'Invalid Date'}
                 </Typography>
                 <Box my={2}>
                     <Typography variant="h5">{name}</Typography>
