@@ -10,6 +10,7 @@ const LinkCard = ({
     longURL,
     shortCode,
     totalClicks,
+    deleteLink,
 }) => {
     return (
         <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -33,7 +34,9 @@ const LinkCard = ({
                     <Box mx={3}>
                         <Button color="primary" size="small" variant="outlined">Copy</Button>
                     </Box>
-                    <Button color="secondary" size="small" variant="contained">Delete</Button>
+                    <Button 
+                    onClick={deleteLink}
+                    color="secondary" size="small" variant="contained">Delete</Button>
                 </Box>
             </Box>
             <Box>

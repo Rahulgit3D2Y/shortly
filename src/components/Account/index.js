@@ -7,8 +7,8 @@ import { app, auth, firestore } from "../../firebase";
 import { nanoid } from "nanoid";
 import {
   collection,
-  getDocs,
-  addDoc,
+  getDocs,deleteDoc,
+  addDoc,doc,
   serverTimestamp,
 } from "firebase/firestore";
 
@@ -78,6 +78,25 @@ const Account = () => {
     fetchLinks();
   }, []);
 
+  const handleDeleteLink = async (linkDocID) => {
+    const linkDocRef = doc(
+      firestore,
+      'users',
+      auth.currentUser.uid,
+      'links',
+      linkDocID
+    );
+  
+    try {
+      await deleteDoc(linkDocRef);
+      console.log('Document deleted successfully');
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+    setLinks(oldLinks=>oldLinks.filter(link=>link.id!==linkDocID))
+  };
+
+
   return (
     <>
       {openModal && (
@@ -106,7 +125,7 @@ const Account = () => {
 
             {links.map((link, idx) => (
               <Fragment key={link.id}>
-                <LinkCard {...link} />
+                <LinkCard {...link} deleteLink={()=>handleDeleteLink(link.id)}/>
                 {idx !== links.length - 1 && (
                   <Box my={4}>
                     <Divider />
