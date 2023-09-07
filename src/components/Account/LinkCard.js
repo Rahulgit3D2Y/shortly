@@ -1,5 +1,6 @@
 import { BarChart as ChartIcon } from "@mui/icons-material";
-import { Typography, Button, Box } from "@mui/material";import { format } from "date-fns"; // Import the format function from date-fns
+import { Typography, Button, Box } from "@mui/material";import copy from "copy-to-clipboard";
+import { format } from "date-fns"; // Import the format function from date-fns
 
 import React from 'react';
 
@@ -12,6 +13,7 @@ const LinkCard = ({
     totalClicks,
     deleteLink,
 }) => {
+    const shortUrl=`${window.location.host}/${shortCode}`
     return (
         <Box display="flex" justifyContent="space-between" alignItems="center">
             <Box>
@@ -28,11 +30,13 @@ const LinkCard = ({
 
                 <Box display="flex" alignItems="center">
                     <Box mr={3}>
-                        <Typography color="primary">{window.location.host}/{shortCode}
+                        <Typography color="primary">
+                            {shortUrl}
                         </Typography>
                     </Box>
                     <Box mx={3}>
-                        <Button color="primary" size="small" variant="outlined">Copy</Button>
+                        <Button onClick={()=>copy(shortUrl)}
+                        color="primary" size="small" variant="outlined">Copy</Button>
                     </Box>
                     <Button 
                     onClick={deleteLink}

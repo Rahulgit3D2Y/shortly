@@ -42,3 +42,9 @@ exports.linkCreated = functions.firestore
     // You can return a Promise if you have asynchronous operations
     // to perform. If not, you can remove the return statement. 
   });
+
+  exports.linkDeleted = functions.firestore.document("users/{userUid}/links/{linkID}").onDelete((snapshot, context) => {
+    const { shortCode } = snapshot.data();
+    return admin.firestore().doc(`links/${shortCode}`).delete();
+  });
+  
