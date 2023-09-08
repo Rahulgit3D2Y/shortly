@@ -12,9 +12,9 @@ const LinkRedirect = () => {
   useEffect(() => {
     const fetchLinkDoc = async () => {
       try {
-        const db = getFirestore();  
-        const linksCollectionRef = collection(db, 'links');  
-        const linkDocRef = doc(linksCollectionRef, shortCode); 
+        const db = getFirestore(); // Get the Firestore instance
+        const linksCollectionRef = collection(db, 'links'); // Reference to the 'links' collection
+        const linkDocRef = doc(linksCollectionRef, shortCode); // Reference to the specific document based on shortCode
         
         const linkDocSnapshot = await getDoc(linkDocRef);
         if (linkDocSnapshot.exists()) {
@@ -35,8 +35,8 @@ const LinkRedirect = () => {
     };
   
     fetchLinkDoc();
-  }, [shortCode] );
-  console.log('Fetching document with shortCode:', shortCode);
+  }, [] );
+
   if (loading) {
     return (
       <Box mt={10}>
@@ -54,7 +54,7 @@ const LinkRedirect = () => {
       </Box>
     );
   }
-  
+console.log('Fetching document with shortCode:', shortCode);
 
   // If no loading and no error, the redirection should have already occurred
   return null;
