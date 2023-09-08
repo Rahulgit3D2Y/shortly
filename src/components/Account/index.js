@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import { Fragment, useState, useEffect } from "react";
 import LinkCard from "./LinkCard";
 import ShortenURlModal from "./ShortenURlModal";
-import { app, auth, firestore } from "../../firebase";
+import {    auth, firestore } from "../../firebase";
 import { nanoid } from "nanoid";
 import {
   collection,

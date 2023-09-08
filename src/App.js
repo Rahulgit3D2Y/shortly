@@ -5,6 +5,7 @@ import { ThemeProvider,CircularProgress,Box } from '@mui/material';
 import theme from "./theme";
 import {auth} from "./firebase";
 import { useEffect, useState } from 'react';
+import LinkRedirect from './components/LinkRedirect';
 const App = () => {
  
 const[user,setUser]=useState(null);
@@ -29,6 +30,7 @@ if(initialLoad)
       <Routes>
         <Route exact path="/" element={user ? <Navigate to="/Account" /> : <Home />} />
         <Route path="/Account" element={user ? <Account /> : <Navigate to="/" />} />
+        <Route path="/:shortCode" element={<LinkRedirect/>} />
       </Routes>
     </ThemeProvider>
   );
