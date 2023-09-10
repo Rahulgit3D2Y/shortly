@@ -1,4 +1,4 @@
- import { createTheme } from "@mui/material/styles";
+ import { unstable_createMuiStrictModeTheme as createTheme } from "@mui/material/styles";
 const customTheme = createTheme({
     palette: {
         primary: {

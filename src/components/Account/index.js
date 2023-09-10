@@ -26,15 +26,15 @@ const Account = () => {
     };
 
     try {
-      const docRef = await addDoc(
+      const resp = await addDoc(
         collection(firestore, 'users', auth.currentUser.uid, 'links'),
         link
       );
 
       // Update the state with the new link
-      setLinks((prevLinks) => [...prevLinks, { ...link, createdAr: new Date(), id: docRef.id }]);
+      setLinks((prevLinks) => [...prevLinks, { ...link, createdAr: new Date(), id: resp.id }]);
 
-      console.log('Document written with ID: ', docRef.id);
+      console.log('Document written with ID: ', resp.id);
       setOpenModal(false);
     } catch (error) {
       console.error('Error adding document: ', error);
@@ -51,19 +51,18 @@ const Account = () => {
           'links'
         );
   
-        const querySnapshot = await getDocs(linksCollectionRef);
+        const snapShot = await getDocs(linksCollectionRef);
   
-        if (!querySnapshot.empty) {
+        if (!snapShot.empty) {
           const tempLinks = [];
-          querySnapshot.forEach((doc) =>
+          snapShot.forEach((doc) =>
             tempLinks.push({
               ...doc.data(),
               id: doc.id,
-              createdAt: doc.data().createdAt?.toDate() || new Date(),
+              createdAt: doc.data().createdAt.toDate() 
             })
           );
   
-          // Sort the links by createdAt in descending order (newest first)
           tempLinks.sort((a, b) => b.createdAt - a.createdAt);
   
           setLinks(tempLinks);

@@ -17,9 +17,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const firestore = getFirestore(app); // Initialize Firestore
-const auth = getAuth(app); // Initialize Firebase Authentication using getAuth
+const firebase = initializeApp(firebaseConfig);
+const firestore = getFirestore(firebase); // Initialize Firestore
+const auth = getAuth(firebase); // Initialize Firebase Authentication using getAuth
 
 
 if (process.env.NODE_ENV === "development") {
@@ -27,4 +27,4 @@ if (process.env.NODE_ENV === "development") {
   connectAuthEmulator(auth, 'http://localhost:9099');
 }
 
-export{app,firestore,auth};
+export{firebase,firestore,auth};

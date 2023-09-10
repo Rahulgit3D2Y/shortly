@@ -7,12 +7,12 @@ import { Close } from '@mui/icons-material'
 
 const ShortenURlModal = ({handleClose,createShortenLink}) => {
 const [form,setForm]=useState({
-    name:'',longUrl:'',
+    name:"",longUrl:"",
 });
 
     const handleChange = (event) => {
-        setForm((prevForm) => ({
-          ...prevForm,
+        setForm((oldForm) => ({
+          ...oldForm,
           [event.target.name]: event.target.value,
         }));
       };
