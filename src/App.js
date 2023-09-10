@@ -1,4 +1,4 @@
-import { Routes, Route ,Navigate } from 'react-router-dom';
+import { Routes, Route ,Navigate, useLocation } from 'react-router-dom';
 import Home from './components/Home';
 import Account from './components/Account';
 import { ThemeProvider,CircularProgress,Box } from '@mui/material';
@@ -9,8 +9,10 @@ import LinkRedirect from './components/LinkRedirect';
 const App = () => {
  
 const[user,setUser]=useState(null);
-const[initialLoad,setInitiaload]=useState(true);
-useEffect(() => {
+const {pathname}=useLocation();
+const[initialLoad,setInitiaload]=useState(pathname==="/"||pathname==="/account"?true:false);
+
+ useEffect(() => {
   auth.onAuthStateChanged((user) => {
     setUser(user);
     setInitiaload(false);

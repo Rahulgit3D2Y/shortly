@@ -1,63 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getFirestore, collection, getDoc, doc } from 'firebase/firestore';
+import { getFirestore, collection, getDoc, doc,updateDoc, increment } from 'firebase/firestore';
 
 import { Box, CircularProgress, Typography } from '@mui/material';
 
 const LinkRedirect = () => {
   const { shortCode } = useParams();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
+ 
   useEffect(() => {
     const fetchLinkDoc = async () => {
-      try {
-        const db = getFirestore(); // Get the Firestore instance
-        const linksCollectionRef = collection(db, 'links'); // Reference to the 'links' collection
-        const linkDocRef = doc(linksCollectionRef, shortCode); // Reference to the specific document based on shortCode
+      
+        const firestore = getFirestore();  
+        const linksCollectionRef = collection(firestore, 'links'); 
+        const linkDocRef = doc(linksCollectionRef, shortCode); 
         
-        const linkDocSnapshot = await getDoc(linkDocRef);
-        if (linkDocSnapshot.exists()) {
-          const { longURL } = linkDocSnapshot.data();        
+        const linkDoc = await getDoc(linkDocRef);
+        if (linkDoc.exists()) {
+          const { longURL, linkID, userUid } = linkDoc.data();
 
-          // Set loading to false before redirecting
-          setLoading(false);
-          window.location.href = longURL;
+          const userLinksDocRef = doc(collection(firestore, 'users', userUid, 'links'), linkID);
+      
+          await updateDoc(userLinksDocRef, {
+            totalClicks: increment(1)
+          });
+        
+            window.location.href = longURL;
         } else {
-          setError(true);
-          setLoading(false);
+           setLoading(false);
         }
-      } catch (error) {
-        console.error('Error fetching link:', error);
-        setError(true);
-        setLoading(false);
-      }
+     
     };
   
     fetchLinkDoc();
-  }, [] );
+  }, [shortCode] );
+console.log('Fetching document with shortCode:', shortCode);
 
   if (loading) {
     return (
-      <Box mt={10}>
+      <Box mt={10} textAlign="center">
         <CircularProgress />
+        <Typography>Redirecting</Typography>
       </Box>
     );
   }
 
-  if (error) {
+  else{
     return (
-      <Box mt={10}>
-        <Typography variant="h6" color="error">
+      <Box mt={10} textAlign="center">
+        <Typography >
           Error: This shortened link does not exist.
         </Typography>
       </Box>
     );
   }
-console.log('Fetching document with shortCode:', shortCode);
 
-  // If no loading and no error, the redirection should have already occurred
-  return null;
-};
+   
+ };
 
 export default LinkRedirect;
