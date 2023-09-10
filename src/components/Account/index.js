@@ -32,7 +32,7 @@ const Account = () => {
       );
 
       // Update the state with the new link
-      setLinks((prevLinks) => [...prevLinks, { ...link, createdAr: new Date(), id: resp.id }]);
+      setLinks((prevLinks) => [...prevLinks, { ...link, createdAt: new Date(), id: resp.id }]);
 
       console.log('Document written with ID: ', resp.id);
       setOpenModal(false);
