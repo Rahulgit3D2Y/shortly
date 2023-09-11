@@ -1,38 +1,10 @@
-import { Typography, TextField, Button, Box, Grid, useMediaQuery } from '@mui/material';
-import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'; // Import createUserWithEmailAndPassword from Firebase's auth module
-import { auth } from '../../firebase';
+import { Typography,   Button, Box, Grid, useMediaQuery } from '@mui/material';
+import React from 'react';
+import AuthModal from './AuthModal';
+
 
 const Home = () => {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
-
-  const handleChange = (event) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      [event.target.name]: event.target.value,
-    }));
-  };
-
-  const handleSignup = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, form.email, form.password);
-      console.log('User registered successfully!');
-    } catch (error) {
-      console.error('Error creating user:', error.message);
-    }
-  };
-
-  const handleSignin = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, form.email, form.password);
-      console.log('User registered successfully!');
-    } catch (error) {
-      console.error('Error creating user:', error.message);
-    }
-  };
+ 
 
   // Check if the screen size is small
   const isSmallScreen = useMediaQuery('(max-width:650px)');
@@ -47,6 +19,7 @@ const Home = () => {
       bgcolor="#56B7BA"
       color="#fff"
     >
+      <AuthModal/>
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Typography variant="h4">Shortly</Typography>
         <Button color="inherit">Login/Signup</Button>
