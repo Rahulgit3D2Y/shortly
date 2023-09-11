@@ -1,10 +1,11 @@
 import { Typography,   Button, Box, Grid, useMediaQuery } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import AuthModal from './AuthModal';
 
 
 const Home = () => {
- 
+ const [openAuthModal,setOpenAuthModal]=useState(false)
+
 
   // Check if the screen size is small
   const isSmallScreen = useMediaQuery('(max-width:650px)');
@@ -19,10 +20,11 @@ const Home = () => {
       bgcolor="#56B7BA"
       color="#fff"
     >
-      <AuthModal/>
+{  openAuthModal &&   <AuthModal onClose={()=>setOpenAuthModal(false)}/>}
+
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Typography variant="h4">Shortly</Typography>
-        <Button color="inherit">Login/Signup</Button>
+        <Button onClick={()=>setOpenAuthModal(true)} color="inherit">Login/Signup</Button>
       </Box>
 
       <Box display="flex" flexGrow={1} alignItems="center">
