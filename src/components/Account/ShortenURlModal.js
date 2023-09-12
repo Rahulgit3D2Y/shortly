@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogActions, Box, Button, TextField, IconButton } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Box, Button, TextField, IconButton, CircularProgress } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
 
 
 
 const ShortenURlModal = ({handleClose,createShortenLink}) => {
+    const [loading,setLoading]=useState(false)
     const [errors,setErrors]=useState({
         name:"",
         longUrl:"",
@@ -20,7 +21,7 @@ const [form,setForm]=useState({
           [event.target.name]: event.target.value,
         }));
       };
-    const handleSubmit=()=>{
+    const handleSubmit=async ()=>{
         const errors={}
         const tName=form.name.trim();
         const tLongUrl=form.longUrl.trim();
@@ -34,8 +35,14 @@ const [form,setForm]=useState({
         }
 
         if(!!Object.keys(errors).length) return setErrors(errors)
+        setLoading(true);
+    try{
+        setTimeout(()=>createShortenLink(form.name,form.longUrl),1000
+        )
 
-        createShortenLink(form.name,form.longUrl)
+    }catch(err){
+        setLoading(false);
+    }
     }
 console.log(errors)
     return (
@@ -60,7 +67,7 @@ console.log(errors)
             </DialogContent>
             <DialogActions>
                 <Box mr={2} my={1}>
-                    <Button onClick={handleSubmit} color="primary" variant='contained' disableElevation>Create Shorten URL</Button>
+                    <Button onClick={handleSubmit} color="primary" variant='contained' disableElevation disabled={loading}>{loading?<CircularProgress/>:"create short URL"} </Button>
                 </Box>
             </DialogActions>
         </Dialog>
