@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import Navbar from "./Navbar";
 import { Fragment, useState, useEffect } from "react";
 import LinkCard from "./LinkCard";
@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 
 const Account = () => {
+  const[fetchingLinks,setFetchingLinks]=useState(true)
   const [openModal, setOpenModal] = useState(false);
   const [links, setLinks] = useState([]);
 
@@ -67,6 +68,8 @@ const Account = () => {
           tempLinks.sort((a, b) => b.createdAt - a.createdAt);
   
           setLinks(tempLinks);
+          setTimeout(()=>setFetchingLinks(false),500)
+          
         } else {
           setLinks([]);
         }
@@ -86,8 +89,9 @@ const Account = () => {
       'links',
       linkDocID
     );
-  
-    try {
+  if(window.confirm('Do you want to delete the link?'))
+  {
+     try {
       await deleteDoc(linkDocRef);
       console.log('Document deleted successfully');
     } catch (error) {
@@ -95,6 +99,8 @@ const Account = () => {
     }
     setLinks(oldLinks=>oldLinks.filter(link=>link.id!==linkDocID))
   };
+  }
+   
 
 
   return (
@@ -123,7 +129,14 @@ const Account = () => {
               </Button>
             </Box>
 
-            {links.map((link, idx) => (
+            {fetchingLinks?(
+            <Box textAlign="center">
+              <CircularProgress/>
+              </Box>
+              ):!links.length?<Box textAlign="center">
+                <img style={{width:'225px',height:'auto',marginBottom:'24px'}} src="../assets/empty_list.svg" alt="no links" />
+                <Typography>You have no links</Typography>
+              </Box> :links.map((link, idx) => (
               <Fragment key={link.id}>
                 <LinkCard {...link} deleteLink={()=>handleDeleteLink(link.id)}/>
                 {idx !== links.length - 1 && (
