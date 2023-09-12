@@ -36,6 +36,7 @@ const Home = () => {
                 <Typography>Powerful lorem4</Typography>
               </Box>
               <Button
+              onClick={()=>setOpenAuthModal(true)}
                 disableElevation
                 variant="contained"
                 size="large"

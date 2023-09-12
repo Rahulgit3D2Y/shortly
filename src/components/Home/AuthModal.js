@@ -1,10 +1,11 @@
 import React,{useState} from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField ,Box, Typography, IconButton} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField ,Box, Typography, IconButton, CircularProgress} from '@mui/material'
 import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'; // Import createUserWithEmailAndPassword from Firebase's auth module
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';  
 import { Close } from '@mui/icons-material'
 
 const AuthModal = ({ onClose}) => {
+  const [loading,setLoading]=useState(false)
     const [error,setError]=useState("")
     const [isSignIn,setIsSignIn]=useState(true)
     const [form, setForm] = useState({
@@ -22,6 +23,7 @@ const AuthModal = ({ onClose}) => {
       
 
       const handleAuth = async () => {
+        setLoading(true);
         try {
           if (isSignIn) {
             await signInWithEmailAndPassword(auth, form.email, form.password);
@@ -32,7 +34,7 @@ const AuthModal = ({ onClose}) => {
           }
         }catch (error) {
             console.error('Error:', error);
-        
+            setLoading(false)
             // Customize error messages based on error codes or messages
             let errorMessage = 'An error occurred';
         
@@ -104,8 +106,9 @@ const AuthModal = ({ onClose}) => {
             variant='contained'
             disableElevation 
             color='primary' 
+            disabled={loading}
             onClick={handleAuth}> 
-            {isSignIn?'Sign in':'Sign Up'}
+            {loading?<CircularProgress />:  isSignIn?'Sign in':'Sign Up'}
             </Button>
             </Box>
 
