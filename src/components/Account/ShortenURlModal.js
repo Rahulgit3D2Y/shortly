@@ -6,6 +6,10 @@ import { Close } from '@mui/icons-material'
 
 
 const ShortenURlModal = ({handleClose,createShortenLink}) => {
+    const [errors,setErrors]=useState({
+        name:"",
+        longUrl:"",
+    })
 const [form,setForm]=useState({
     name:"",longUrl:"",
 });
@@ -17,8 +21,23 @@ const [form,setForm]=useState({
         }));
       };
     const handleSubmit=()=>{
+        const errors={}
+        const tName=form.name.trim();
+        const tLongUrl=form.longUrl.trim();
+        const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+        const regex = new RegExp(expression);
+        if (tName.length<3 || tName.length>15 ){
+            errors.name="The name should be min 3 and max 15 char long"
+        }
+        if(!regex.test(tLongUrl)){
+            errors.longUrl="URL is not valid"
+        }
+
+        if(!!Object.keys(errors).length) return setErrors(errors)
+
         createShortenLink(form.name,form.longUrl)
     }
+console.log(errors)
     return (
         <Dialog open={true} onClose={handleClose} fullWidth>
             <DialogTitle>
@@ -32,10 +51,12 @@ const [form,setForm]=useState({
 
             <DialogContent>
                 <Box mb={3}>
-                    <TextField value={form.name} name="name" onChange={handleChange} fullWidth varient="filled" label="Name" />
+                    <TextField error={!!errors.name}
+                    helperText={errors.name} value={form.name} name="name" onChange={handleChange} fullWidth varient="filled" label="Name" />
                 </Box>
 
-                <TextField value={form.longUrl} name="longUrl" onChange={handleChange} fullWidth varient="filled" label="Long URL" />
+                <TextField error={!!errors.longUrl}
+                    helperText={errors.longUrl}  value={form.longUrl} name="longUrl" onChange={handleChange} fullWidth varient="filled" label="Long URL" />
             </DialogContent>
             <DialogActions>
                 <Box mr={2} my={1}>
