@@ -25,8 +25,7 @@ const [form,setForm]=useState({
         const errors={}
         const tName=form.name.trim();
         const tLongUrl=form.longUrl.trim();
-        // eslint-disable-next-line
-        const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+         const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
         const regex = new RegExp(expression);
         if (tName.length<3 || tName.length>15 ){
             errors.name="The name should be min 3 and max 15 char long"
@@ -35,16 +34,15 @@ const [form,setForm]=useState({
             errors.longUrl="URL is not valid"
         }
 
-        if(!!Object.keys(errors).length) return setErrors(errors)
+        if(!!Object.keys(errors).length) return setErrors(errors); 
         setLoading(true);
-    try{
-        setTimeout(()=>createShortenLink(form.name,form.longUrl),1000
-        )
-
-    }catch(err){
-        setLoading(false);
-    }
-    }
+        try {
+            await createShortenLink(tName, tLongUrl);
+          } catch (err) {
+            console.error("Error creating short URL:", err);
+            setLoading(false);
+          }
+    };
 console.log(errors)
     return (
         <Dialog open={true} onClose={handleClose} fullWidth>

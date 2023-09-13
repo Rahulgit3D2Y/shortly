@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 
 const Account = () => {
-  const[fetchingLinks,setFetchingLinks]=useState(true)
+  const[fetchingLinks,setFetchingLinks]=useState( false)
   const [openModal, setOpenModal] = useState(false);
   const [links, setLinks] = useState([]);
 
@@ -68,7 +68,7 @@ const Account = () => {
           tempLinks.sort((a, b) => b.createdAt - a.createdAt);
   
           setLinks(tempLinks);
-          setTimeout(()=>setFetchingLinks(false),500)
+           setFetchingLinks(false) 
           
         } else {
           setLinks([]);
@@ -112,7 +112,7 @@ const Account = () => {
         />
       )}
       <Navbar />
-      <Box mt={{xs:3,sm:5}} p={{xs:2,sm:0}}>
+      <Box mt={{xs:3,sm:5}} p={{xs:2,sm:0}}  >
         <Grid container justifyContent="center">
           <Grid item xs={12} sm={8}>
             <Box mb={5} display="flex">
