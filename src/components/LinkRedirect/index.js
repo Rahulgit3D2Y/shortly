@@ -1,40 +1,43 @@
-import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getFirestore, collection, getDoc, doc,updateDoc, increment } from 'firebase/firestore';
-
+import {   doc, getDoc, increment, updateDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import {   firestore } from '../../firebase'; // Import your Firebase setup here
 import { Box, CircularProgress, Typography } from '@mui/material';
 
 const LinkRedirect = () => {
   const { shortCode } = useParams();
   const [loading, setLoading] = useState(true);
- 
+
   useEffect(() => {
     const fetchLinkDoc = async () => {
-      
-        const firestore = getFirestore();  
-        const linksCollectionRef = collection(firestore, 'links'); 
-        const linkDocRef = doc(linksCollectionRef, shortCode); 
-        
-        const linkDoc = await getDoc(linkDocRef);
-        if (linkDoc.exists()) {
-          const { longURL, linkID, userUid } = linkDoc.data();
+      try {
+         
+        const linkDocRef = doc(firestore, 'links', shortCode);
+        const linkDocSnap = await getDoc(linkDocRef);
 
-          const userLinksDocRef = doc(collection(firestore, 'users', userUid, 'links'), linkID);
-      
+        if (linkDocSnap.exists()) {
+          const { longURL, linkID, userUid } = linkDocSnap.data();
+
+          const userLinksDocRef = doc(firestore, 'users', userUid, 'links', linkID);
+
           await updateDoc(userLinksDocRef, {
-            totalClicks: increment(1)
+            totalClicks: increment(1),
           });
-        
-            window.location.href = longURL;
+
+          window.location.href = longURL;
         } else {
-           setLoading(false);
+          setLoading(false);
         }
-     
+      } catch (error) {
+        console.error('Error fetching link document:', error);
+        setLoading(false);
+      }
     };
-  
+
     fetchLinkDoc();
-  }, [shortCode] );
-console.log('Fetching document with shortCode:', shortCode);
+  }, [shortCode]);
+
+  console.log('Fetching document with shortCode:', shortCode);
 
   if (loading) {
     return (
@@ -43,19 +46,13 @@ console.log('Fetching document with shortCode:', shortCode);
         <Typography>Redirecting</Typography>
       </Box>
     );
-  }
-
-  else{
+  } else {
     return (
       <Box mt={10} textAlign="center">
-        <Typography >
-          Error: This shortened link does not exist.
-        </Typography>
+        <Typography>Error: This shortened link does not exist.</Typography>
       </Box>
     );
   }
-
-   
- };
+};
 
 export default LinkRedirect;

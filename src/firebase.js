@@ -3,7 +3,7 @@ import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getAuth,connectAuthEmulator } from 'firebase/auth'; 
  
-const firebaseConfig = {
+var firebaseConfig = {
   apiKey: "AIzaSyA54TJW1UVxGSAQPSsGM9oOdjzf4xabBOY",
   authDomain: "shortly-af7eb.firebaseapp.com",
   projectId: "shortly-af7eb",
@@ -17,9 +17,9 @@ const firestore = getFirestore(firebase);
 const auth = getAuth(firebase);  
 
 
-if (process.env.NODE_ENV === "development") {
-  connectFirestoreEmulator(firestore, 'localhost', 8080);
-  connectAuthEmulator(auth, 'http://localhost:9099');
-}
+// if (process.env.NODE_ENV === "development") {
+//   connectFirestoreEmulator(firestore, 'localhost', 8080);
+//   connectAuthEmulator(auth, 'http://localhost:9099');
+// }
 
 export{firebase,firestore,auth};

@@ -1,27 +1,31 @@
-
-const { onRequest } = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+ 
 const functions = require("firebase-functions")
 const admin = require("firebase-admin")
 
 admin.initializeApp()
 
 exports.linkCreated = functions.firestore
-  .document("users/{userUid}/links/{linkID}")
-  .onCreate((snapshot, context) => {
-    const { userUid, linkID } = context.params;
-    const { longURL, shortCode } = snapshot.data();
-    admin.firestore().doc(`links/${shortCode}`).set({
-      userUid,
-       linkID, 
-       longURL
-    });
+  .document('users/{userUid}/links/{linkID}')
+  .onCreate(async (snapshot, context) => {
+    try {
+      const { userUid, linkID } = context.params;
+      const { longURL, shortCode } = snapshot.data();
 
+      // Reference to the "links" collection
+      const linksCollection = admin.firestore().collection('links');
 
-    console.log(`New link created for user ${userUid}, link ID: ${linkID}`);
-    console.log(`Long URL: ${longURL}, Short Code: ${shortCode}`);
+      // Create a document in the "links" collection
+      await linksCollection.doc(shortCode).set({
+        userUid,
+        linkID,
+        longURL,
+      });
 
- return Promise.resolve(); 
+      console.log(`New link created for user ${userUid}, link ID: ${linkID}`);
+      console.log(`Long URL: ${longURL}, Short Code: ${shortCode}`);
+    } catch (error) {
+      console.error('Error creating link:', error);
+    }
   });
 
   exports.linkDeleted = functions.firestore.document("users/{userUid}/links/{linkID}").onDelete((snapshot, context) => {

@@ -25,6 +25,7 @@ const [form,setForm]=useState({
         const errors={}
         const tName=form.name.trim();
         const tLongUrl=form.longUrl.trim();
+        // eslint-disable-next-line
          const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
         const regex = new RegExp(expression);
         if (tName.length<3 || tName.length>15 ){
